@@ -1,36 +1,38 @@
-/* ***********************************************************
+# /* ***********************************************************
 
-	makefile
+# 	makefile
 	
-	The makefile for use with gmake to handle building the
-	project.
+# 	The makefile for use with gmake to handle building the
+# 	project.
 	
-	This file forms part of the qbRayTrace project as described
-	in the series of videos on the QuantitativeBytes YouTube
-	channel.
+# 	This file forms part of the qbRayTrace project as described
+# 	in the series of videos on the QuantitativeBytes YouTube
+# 	channel.
 	
-	This code corresponds specifically to Episode 1 of the series,
-	which may be found here:
-	https://youtu.be/JN5yUrJPThI
+# 	This code corresponds specifically to Episode 1 of the series,
+# 	which may be found here:
+# 	https://youtu.be/JN5yUrJPThI
 	
-	The whole series may be found on the QuantitativeBytes 
-	YouTube channel at:
-	www.youtube.com/c/QuantitativeBytes
+# 	The whole series may be found on the QuantitativeBytes 
+# 	YouTube channel at:
+# 	www.youtube.com/c/QuantitativeBytes
 	
-	GPLv3 LICENSE
-	Copyright (c) 2021 Michael Bennett
+# 	GPLv3 LICENSE
+# 	Copyright (c) 2021 Michael Bennett
 	
-***********************************************************/
+# ***********************************************************/
 
 # Define the link target.
 linkTarget = qbRay
 
 # Define libraries that we need,
-LIBS = -lSDL2
+LIBS = -lSDL2 -lpixman-1
+
+INC = -I/usr/include/pixman-1
 
 # Define flags.
 # CFLAGS = -std=c++17 -pg
-CFLAGS = -std=c++17
+CFLAGS = -std=c++17 $(INC)
 
 # Define the object files that we need to use.
 objects = main.o \

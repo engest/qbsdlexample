@@ -47,7 +47,7 @@ bool CApp::OnInit()
 		
 		// Initialise the qbImage instance.
 		m_image.Initialize(1280, 720, pRenderer);
-		
+
 		// Create some colour variations.
 		for (int x=0; x<1280; ++x)
 		{
@@ -112,7 +112,7 @@ void CApp::OnRender()
 	SDL_RenderClear(pRenderer);
 	
 	// Display the image.
-	//m_image.Display();
+	m_image.Display();
 	
 	// Show the result.
 	SDL_RenderPresent(pRenderer);

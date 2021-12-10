@@ -42,6 +42,7 @@ class CApp
 	private:
 		// An instance of qbImage to store the image.
 		qbImage m_image;
+		
 	
 		// SDL2 stuff.
 		bool isRunning;

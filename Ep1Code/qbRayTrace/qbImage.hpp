@@ -28,6 +28,7 @@
 #include <string>
 #include <vector>
 #include <SDL2/SDL.h>
+#include <pixman-1/pixman.h>
 
 class qbImage
 {
@@ -46,6 +47,9 @@ class qbImage
 	
 		// Function to set pixels.
 		void SetPixel(const int x, const int y, const double red, const double green, const double blue);
+		
+		// Function to get pixel ptr
+		Uint32 * GetPixels();
 		
 		// Function to return the image for display.
 		void Display();
@@ -66,7 +70,9 @@ class qbImage
 		// SDL2 stuff.
 		SDL_Renderer *m_pRenderer;
 		SDL_Texture *m_pTexture;
-
+		SDL_Surface *m_pSurface;
+		Uint32 * m_pPixels;
+		pixman_image_t *image;
 };
 
 #endif

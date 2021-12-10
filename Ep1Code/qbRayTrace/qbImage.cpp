@@ -71,24 +71,27 @@ void qbImage::SetPixel(const int x, const int y, const double red, const double 
 void qbImage::Display()
 {
 	// Allocate memory for a pixel buffer.
-	Uint32 *tempPixels = new Uint32[m_xSize * m_ySize];
+	//Uint32 *tempPixels = new Uint32[m_xSize * m_ySize];
 	
 	// Clear the pixel buffer.
-	memset(tempPixels, 0, m_xSize * m_ySize * sizeof(Uint32));
+	//memset(m_pPixels, 0, m_xSize * m_ySize * sizeof(Uint32));
+	memset(m_pSurface->pixels, 0, m_xSize * m_ySize * sizeof(Uint32));
 	
 	for (int x=0; x<m_xSize; ++x)
 	{
 		for (int y=0; y<m_ySize; ++y)
 		{
-			tempPixels[(y*m_xSize)+x] = ConvertColor(m_rChannel.at(x).at(y), m_gChannel.at(x).at(y), m_bChannel.at(x).at(y));
+			static_cast<Uint32 *>(m_pSurface->pixels)[(y*m_xSize)+x] = ConvertColor(m_rChannel.at(x).at(y), m_gChannel.at(x).at(y), m_bChannel.at(x).at(y));
 		}
 	}
 	
 	// Update the texture with the pixel buffer.
-	SDL_UpdateTexture(m_pTexture, NULL, tempPixels, m_xSize * sizeof(Uint32));	
+	image = pixman_image_create_bits(PIXMAN_x8r8g8b8, m_xSize, m_ySize, reinterpret_cast<uint32_t *>(m_pSurface->pixels), m_xSize * sizeof(Uint32));
+	//SDL_UpdateTexture(m_pTexture, NULL, m_pSurface->pixels, m_xSize * sizeof(Uint32));	
+	SDL_UpdateTexture(m_pTexture, NULL, pixman_image_get_data(image), m_xSize * sizeof(Uint32));	
 	
 	// Destroy the pixel buffer.
-	delete[] tempPixels;
+	//delete[] tempPixels;
 	
 	// Copy the texture to the renderer.
 	SDL_Rect srcRect, bounds;
@@ -121,11 +124,11 @@ void qbImage::InitTexture()
 	// Delete any previously created texture before we create a new one.
 	if (m_pTexture != NULL)
 		SDL_DestroyTexture(m_pTexture);
-	
 	// Create the texture that will store the image.
-	SDL_Surface *tempSurface = SDL_CreateRGBSurface(0, m_xSize, m_ySize, 32, rmask, gmask, bmask, amask);
-	m_pTexture = SDL_CreateTextureFromSurface(m_pRenderer, tempSurface);
-	SDL_FreeSurface(tempSurface);	
+	m_pSurface = SDL_CreateRGBSurface(0, m_xSize, m_ySize, 32, rmask, gmask, bmask, amask);
+	m_pPixels = static_cast<Uint32 *>(m_pSurface->pixels);
+	m_pTexture = SDL_CreateTextureFromSurface(m_pRenderer, m_pSurface);
+	//SDL_FreeSurface(tempSurface);
 }
 
 // Function to convert color to Uint32
@@ -137,10 +140,13 @@ Uint32 qbImage::ConvertColor(const double red, const double green, const double 
 	unsigned char b = static_cast<unsigned char>(blue);
 
 	#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-		Uint32 pixelColor = (b << 24) + (g << 16) + (r << 8) + 255;
+		Uint32 pixelColor = (r << 24) + (g << 16) + (b << 8) + 255;
 	#else
-		Uint32 pixelColor = (255 << 24) + (r << 16) + (g << 8) + b;
+		Uint32 pixelColor = (255 << 24) + (b << 16) + (g << 8) + r;
 	#endif
 	
 	return pixelColor;
 }
+ Uint32 * qbImage::GetPixels() {
+	 return this->m_pPixels;
+ }
