@@ -1,3 +1,5 @@
+This is temporary example in Ep1 to show pixman being used as the data backing. All credit goes to the wonderfully talented QuantitativeBytes at https://github.com/QuantitativeBytes/qbRayTrace/blob/main/LICENSE
+
 # qbRayTrace
 
 Welcome to my new series on building a ray tracer from scratch in C++ with the SDL2 library! Follow me in this 'code with me' style series as I build a simple but functional ray tracer from scratch in C++. As far as possible, I use only the standard libraries, with the addition of SDL2 to allow the display of the final image in a window. 
